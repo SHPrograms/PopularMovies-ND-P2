@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_movie_background">#A19EA6</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#070e3e</color>
+    <color name="colorAccent">#281c8e</color>
+</resources>

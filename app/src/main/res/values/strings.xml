@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="top_rated_action_item">Top rated</string>
+    <string name="most_popular_action_item">Most popular</string>
+    <string name="No_internet_connection">Check your internet connection</string>
+    <string name="ranking">Ranking</string>
+    <string name="release_date">Release Date</string>
+    <string name="image_from_the_movie_db">Image from The Movie DB</string>
+    <string name="popular_action_item">Popular</string>
+</resources>
