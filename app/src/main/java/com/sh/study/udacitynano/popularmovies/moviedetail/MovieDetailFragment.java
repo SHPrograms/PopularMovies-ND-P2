@@ -26,8 +26,8 @@ import com.squareup.picasso.Picasso;
  * @since 2018-02-23
  */
 public class MovieDetailFragment extends Fragment {
+    private static final String CLASS_NAME = "MovieDetailFragment";
 
-    private static final String CLASS_NAME = MovieDetailFragment.class.getSimpleName();
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -38,8 +38,7 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        MoviesConstants.debugTag(CLASS_NAME, "onCreateView");
+        MoviesConstants.debugTag(CLASS_NAME, "onCreateView:start");
 
         View rootView = inflater.inflate(R.layout.movie_detail, container, false);
 

@@ -10,12 +10,13 @@ import com.sh.study.udacitynano.popularmovies.database.MoviesContract;
 import com.sh.study.udacitynano.popularmovies.model.Movie;
 
 final class MovieDetailContactProvider {
-
+    private static final String CLASS_NAME = "MovieDetailContactProvider";
     static final int IS_POPULAR = 1;
     static final int IS_NOT_POPULAR = 2;
     static final int IS_ERROR = 3;
 
     static boolean isMovieInDB(ContentResolver contentResolver, Movie movie) {
+        MoviesConstants.debugTag(CLASS_NAME, "isMovieInDB:start - movieId: " + movie.id());
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(
@@ -29,17 +30,16 @@ final class MovieDetailContactProvider {
     }
 
     static int changeMovieStatus(ContentResolver contentResolver, Movie movie, Boolean popular) {
-
+        MoviesConstants.debugTag(CLASS_NAME, "changeMovieStatus:start - movieId: " + movie.id());
         if (popular == null) {
             popular = isMovieInDB(contentResolver, movie);
         }
-
         if (popular) {
             // delete from database
             int deleted = contentResolver.delete(
                     MoviesContract.MoviesEntry.singleMovieUri(movie.id()),
                     null, null);
-            MoviesConstants.infoTag(contentResolver.getClass().getSimpleName(), "changeMovieStatus.delete: " + String.valueOf(deleted));
+            MoviesConstants.infoTag(contentResolver.getClass().getSimpleName(), "Deleted rows: " + String.valueOf(deleted));
             if (deleted > 0) return IS_NOT_POPULAR;
             else return IS_ERROR;
         } else {
@@ -61,7 +61,7 @@ final class MovieDetailContactProvider {
             Uri insertResult = contentResolver.insert(
                     MoviesContract.MoviesEntry.singleMovieUri(movie.id()),
                     values);
-            MoviesConstants.infoTag(contentResolver.getClass().getSimpleName(), "changeMovieStatus.insert: " + String.valueOf(insertResult));
+            MoviesConstants.infoTag(contentResolver.getClass().getSimpleName(), "Inserted data: " + String.valueOf(insertResult));
             if (insertResult != null) return IS_POPULAR;
             else return IS_ERROR;
         }

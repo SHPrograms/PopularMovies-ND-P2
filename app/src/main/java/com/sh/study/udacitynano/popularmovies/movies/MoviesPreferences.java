@@ -15,10 +15,12 @@ final class MoviesPreferences {
         throw new AssertionError();
     }
     static final String SOURCE = "source";
+
     static final int SOURCE_POPULAR_MOVIES = 1;
     static final int SOURCE_NOT_POPULAR_MOVIES = 2;
 
     static final String SORT = "sort";
+
     static final int SORT_POPULARITY_MOVIES = 1;
     static final int SORT_TOP_RATED_MOVIES = 2;
 

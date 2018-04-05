@@ -23,8 +23,7 @@ import com.sh.study.udacitynano.popularmovies.database.MoviesContract.MoviesEntr
  * @since 2018-03-20
  */
 public class MoviesProvider extends ContentProvider {
-
-    private static final String CLASS_NAME = MoviesProvider.class.getSimpleName();
+    private static final String CLASS_NAME = "MoviesProvider";
 
     public static final int CODE_MOVIES = 100;
     public static final int CODE_SINGLE_MOVIE = 101;
@@ -40,8 +39,7 @@ public class MoviesProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        MoviesConstants.debugTag(CLASS_NAME,"onCreate");
-
+        MoviesConstants.debugTag(CLASS_NAME,"onCreate:start");
         mDBHelper = new MoviesDBHelper(getContext());
         return true;
     }
@@ -49,8 +47,7 @@ public class MoviesProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        MoviesConstants.debugTag(CLASS_NAME,"query uri: " + uri.toString());
-
+        MoviesConstants.debugTag(CLASS_NAME,"query:start - uri: " + uri.toString());
         switch (sUriMatcher.match(uri)) {
             case CODE_SINGLE_MOVIE: {
                 // uri.getLastPathSegment() equals ContentUris.parseId(uri)
@@ -60,14 +57,7 @@ public class MoviesProvider extends ContentProvider {
                 break;
             }
             case CODE_MOVIES: {
-
-                if (TextUtils.isEmpty(sortOrder)) {
-                    // default sortOrder
-                    sortOrder = MoviesEntry.SQL_SORT_ORDER_POPULARITY;
-                } else {
-                    // TODO: Add sorting by popular or ranking here or in MoviesActivity
-
-                }
+                if (TextUtils.isEmpty(sortOrder)) sortOrder = MoviesEntry.SQL_SORT_ORDER_POPULARITY;
                 break;
             }
             default:
@@ -82,13 +72,14 @@ public class MoviesProvider extends ContentProvider {
                 null,
                 sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        MoviesConstants.debugTag(CLASS_NAME,"query:end - cursor: " + cursor.getCount());
         return cursor;
     }
 
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        MoviesConstants.debugTag(CLASS_NAME,"getType uri: " + uri.toString());
+        MoviesConstants.debugTag(CLASS_NAME,"getType:start - uri: " + uri.toString());
         // TODO: Provider getType implementation is not necessary for pass but use for return blob data...
         throw new UnsupportedOperationException("Not implemented yet.");
     }
@@ -96,8 +87,7 @@ public class MoviesProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        MoviesConstants.debugTag(CLASS_NAME,"insert uri: " + uri.toString() + ", values: " + values.toString());
-
+        MoviesConstants.debugTag(CLASS_NAME,"insert:start - uri: " + uri.toString() + ", values: " + values.toString());
         Uri result;
         switch (sUriMatcher.match(uri)) {
             case CODE_SINGLE_MOVIE: {
@@ -117,13 +107,13 @@ public class MoviesProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+        MoviesConstants.debugTag(CLASS_NAME,"insert:end - uri: " + result.toString());
         return result;
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        MoviesConstants.debugTag(CLASS_NAME,"delete uri: " + uri.toString());
-
+        MoviesConstants.debugTag(CLASS_NAME,"delete:start - uri: " + uri.toString());
         int numberDeletedRows;
         switch (sUriMatcher.match(uri)) {
             case CODE_SINGLE_MOVIE: {
@@ -133,7 +123,6 @@ public class MoviesProvider extends ContentProvider {
                                 MoviesEntry.COL_MOVIE_ID + " = " + ContentUris.parseId(uri),
                                 selection),
                         selectionArgs);
-
                 if (numberDeletedRows > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 } else {
@@ -144,12 +133,13 @@ public class MoviesProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+        MoviesConstants.debugTag(CLASS_NAME,"delete:end - numberDeletedRows: " + numberDeletedRows);
         return numberDeletedRows;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        MoviesConstants.debugTag(CLASS_NAME,"update uri: " + uri.toString() + ", values: " + values.toString());
+        MoviesConstants.debugTag(CLASS_NAME,"update:start - uri: " + uri.toString() + ", values: " + values.toString());
         // TODO: Provider update implementation is not necessary for pass but use for regular...
         // update movies with old COL_LAST_UPDATE_DATE
         throw new UnsupportedOperationException("Not implemented yet.");

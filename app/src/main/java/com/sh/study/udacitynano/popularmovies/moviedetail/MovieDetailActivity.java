@@ -24,7 +24,6 @@ import java.util.UnknownFormatConversionException;
  * @since 2018-02-23
  */
 public class MovieDetailActivity extends AppCompatActivity {
-
     /**
      * TODO: Add reviews and videos features...
      * path: https://api.themoviedb.org/3/movie/{id}/videos?&api_key=[youur_api_key]
@@ -39,13 +38,12 @@ public class MovieDetailActivity extends AppCompatActivity {
      *  - to get that image:
      *  - {@see "https://stackoverflow.com/questions/43894658/how-to-get-video-thumbnail-from-youtube-url-and-set-it-to-image-view-in-android"}
      */
-    private static final String CLASS_NAME = MovieDetailActivity.class.getSimpleName();
+    private static final String CLASS_NAME = "MovieDetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MoviesConstants.debugTag(CLASS_NAME, "onCreate");
+        MoviesConstants.debugTag(CLASS_NAME, "onCreate:start");
 
         setContentView(R.layout.activity_movie_detail);
 
@@ -91,13 +89,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        MoviesConstants.debugTag(CLASS_NAME, "onOptionsItemSelected id: " + item.toString());
-
+        MoviesConstants.debugTag(CLASS_NAME, "onOptionsItemSelected:start - id: " + item.toString());
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
@@ -105,6 +101,4 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

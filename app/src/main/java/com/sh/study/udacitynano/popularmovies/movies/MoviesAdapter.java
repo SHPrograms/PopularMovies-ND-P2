@@ -24,22 +24,18 @@ import java.util.ArrayList;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdapterViewHolder> {
 
     private ArrayList<Movie> movies;
-    private final boolean mTwoPane;
-
     final private MoviesAdapterOnClickHandler mClickHandler;
 
     public interface MoviesAdapterOnClickHandler {
         void onClick(Movie movie);
     }
 
-   public MoviesAdapter(MoviesActivity parent, ArrayList<Movie> movieList, boolean twoPane, MoviesAdapterOnClickHandler clickHandler) {
+   public MoviesAdapter(ArrayList<Movie> movieList, MoviesAdapterOnClickHandler clickHandler) {
         movies = new ArrayList<>();
         if (movieList != null) {
             movies = movieList;
         }
-        mTwoPane = twoPane;
         mClickHandler = clickHandler;
-
     }
 
     @Override
@@ -54,27 +50,20 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
         Picasso.with(holder.mPoster.getContext())
                 .load(String.valueOf(NetworkUtils.buildUrlForPoster(movies.get(position).posterPath())))
                 .into(holder.mPoster);
-//        testing purporses
-//        holder.mIdView.setText(String.valueOf(position + 1));
-//        holder.mContentView.setText(String.valueOf(movies.get(position).popularity()));
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        if (movies == null) return 0;
+        else return movies.size();
     }
 
     public class MoviesAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-
         private final ImageView mPoster;
-//        private final TextView mIdView;
-//        private final TextView mContentView;
 
         public MoviesAdapterViewHolder(View view) {
             super(view);
             mPoster = view.findViewById(R.id.movie_poster_iv);
-//            mIdView = view.findViewById(R.id.ranking_tv);
-//            mContentView = view.findViewById(R.id.number_tv);
             view.setOnClickListener(this);
         }
 
@@ -85,7 +74,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
             mClickHandler.onClick(movie);
         }
     }
-
     public void loadMovies(ArrayList<Movie> moviesData) {
         movies = moviesData;
         notifyDataSetChanged();

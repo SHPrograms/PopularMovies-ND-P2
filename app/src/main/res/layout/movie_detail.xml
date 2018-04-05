@@ -12,24 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!--
-        <ImageView
-            android:id="@+id/detail_poster_value_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
--->
-        <!--
-
-        <TextView
-            android:id="@+id/detail_original_title_value_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"/>
--->
-
         <TextView
             android:id="@+id/detail_overview_value_tv"
             style="?android:attr/textAppearanceMedium"

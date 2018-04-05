@@ -24,8 +24,7 @@ import java.util.Scanner;
  * @since 2018-02-23
  */
  public final class NetworkUtils {
-
-    private static final String CLASS_NAME = NetworkUtils.class.getSimpleName();
+    private static final String CLASS_NAME = "NetworkUtils";
 
     public static final int POPULARITY_MOVIES = 1;
     public static final int TOP_RATED_MOVIES = 2;
@@ -49,7 +48,7 @@ import java.util.Scanner;
      * @throws IOException Related to network and stream reading
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
-        MoviesConstants.debugTag(CLASS_NAME, "getResponseFromHttpUrl: " + url.toString());
+        MoviesConstants.debugTag(CLASS_NAME, "getResponseFromHttpUrl:start - URL: " + url.toString());
 
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -85,7 +84,6 @@ import java.util.Scanner;
         }
       return checkUrl(url);
     }
-
     /**
      * Builds the URL used to talk to the Movie DB server.
      *
@@ -104,7 +102,7 @@ import java.util.Scanner;
      * @return Array of Strings describing Movies
      */
     public static ArrayList<Movie> getDataFromJson(String movieJsonStr) {
-        MoviesConstants.debugTag(CLASS_NAME, "getDataFromJson");
+        MoviesConstants.debugTag(CLASS_NAME, "getDataFromJson:start");
 
         ArrayList<Movie> movies = new ArrayList<>();
 
@@ -144,7 +142,7 @@ import java.util.Scanner;
      * @throws MalformedURLException If URL is incorrect.
      */
     private static URL checkUrl(String url) {
-        MoviesConstants.debugTag(CLASS_NAME, "checkUrl: " + url);
+        //MoviesConstants.debugTag(CLASS_NAME, "checkUrl: " + url);
 
         URL u = null;
         try {
