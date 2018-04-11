@@ -23,7 +23,6 @@ public class MoviesContract {
         static final String TABLE_NAME = "movies";
         public static final String COL_MOVIE_ID = "movie_id";
         public static final String COL_VOTE_COUNT = "vote_count";
-        public static final String COL_VIDEO = "video";
         public static final String COL_VOTE_AVERAGE = "vote_average";
         public static final String COL_POPULARITY = "popularity";
         public static final String COL_TITLE = "title";
@@ -48,10 +47,9 @@ public class MoviesContract {
          * SQL Statement to create the movies table
          */
         static final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_MOVIE_ID + " INTEGER NOT NULL, " +
                 COL_VOTE_COUNT + " INTEGER NOT NULL," +
-                COL_VIDEO + " INTEGER NOT NULL," +
                 COL_VOTE_AVERAGE + " REAL NOT NULL," +
                 COL_POPULARITY + " REAL NOT NULL," +
                 COL_TITLE + " TEXT NOT NULL," +

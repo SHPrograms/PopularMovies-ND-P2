@@ -116,7 +116,6 @@ import java.util.Scanner;
                 Movie m = Movie.create(
                         movie.getLong("id"),
                         movie.getLong("vote_count"),
-                        movie.getBoolean("video"),
                         movie.getDouble("vote_average"),
                         movie.getDouble("popularity"),
                         movie.getString("title"),

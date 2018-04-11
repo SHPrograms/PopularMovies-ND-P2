@@ -7,4 +7,6 @@
     <string name="release_date">Release Date</string>
     <string name="image_from_the_movie_db">Image from The Movie DB</string>
     <string name="popular_action_item">Popular</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
 </resources>

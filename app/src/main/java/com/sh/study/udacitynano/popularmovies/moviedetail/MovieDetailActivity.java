@@ -26,17 +26,8 @@ import java.util.UnknownFormatConversionException;
 public class MovieDetailActivity extends AppCompatActivity {
     /**
      * TODO: Add reviews and videos features...
-     * path: https://api.themoviedb.org/3/movie/{id}/videos?&api_key=[youur_api_key]
      * path: https://api.themoviedb.org/3/movie/{id}/reviews?&api_key=[youur_api_key]
-     * Possible implementation:
-     *  - ViewModel to keep data separated from the View.
-     *  - Inside ViewModel use LiveData to have the possibility to observe everything in ViewModel.
      *  - {@see "https://youtu.be/F4q4HPUKFME"}
-     *
-     * Videos:
-     *  - http://img.youtube.com/vi/(the_video_id_goes_here)/0.jpg
-     *  - to get that image:
-     *  - {@see "https://stackoverflow.com/questions/43894658/how-to-get-video-thumbnail-from-youtube-url-and-set-it-to-image-view-in-android"}
      */
     private static final String CLASS_NAME = "MovieDetailActivity";
 
@@ -56,6 +47,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
 
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
@@ -89,6 +81,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @Override

@@ -9,6 +9,13 @@ import com.sh.study.udacitynano.popularmovies.constants.MoviesConstants;
 import com.sh.study.udacitynano.popularmovies.database.MoviesContract;
 import com.sh.study.udacitynano.popularmovies.model.Movie;
 
+/**
+ * Contact with Content Provider for changing status of movie in local DB.
+ *
+ * @author Sławomir Hagiel
+ * @version 1.0
+ * @since 2018-04-08
+ */
 final class MovieDetailContactProvider {
     private static final String CLASS_NAME = "MovieDetailContactProvider";
     static final int IS_POPULAR = 1;
@@ -48,7 +55,6 @@ final class MovieDetailContactProvider {
             values.clear();
             values.put(MoviesContract.MoviesEntry.COL_MOVIE_ID, movie.id());
             values.put(MoviesContract.MoviesEntry.COL_VOTE_COUNT, movie.voteCount());
-            values.put(MoviesContract.MoviesEntry.COL_VIDEO, movie.video());
             values.put(MoviesContract.MoviesEntry.COL_VOTE_AVERAGE, movie.voteAverage());
             values.put(MoviesContract.MoviesEntry.COL_POPULARITY, movie.popularity());
             values.put(MoviesContract.MoviesEntry.COL_TITLE, movie.tittle());

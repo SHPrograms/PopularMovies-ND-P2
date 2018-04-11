@@ -15,7 +15,6 @@ import com.google.auto.value.AutoValue;
 
     public abstract Long id();
     public abstract Long voteCount();
-    public abstract Boolean video();
     public abstract Double voteAverage();
     public abstract Double popularity();
     public abstract String tittle();
@@ -28,7 +27,6 @@ import com.google.auto.value.AutoValue;
     public static Movie create(
             Long id,
             Long voteCount,
-            Boolean video,
             Double voteAverage,
             Double popularity,
             String tittle,
@@ -41,7 +39,6 @@ import com.google.auto.value.AutoValue;
       return new AutoValue_Movie(
               id,
               voteCount,
-              video,
               voteAverage,
               popularity,
               tittle,

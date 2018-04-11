@@ -61,7 +61,6 @@ class MoviesLocalLoader extends AsyncTaskLoader<ArrayList<Movie>> {
                 Movie m = Movie.create(
                         cursor.getLong(cursor.getColumnIndexOrThrow(MoviesContract.MoviesEntry.COL_MOVIE_ID)),
                         cursor.getLong(cursor.getColumnIndexOrThrow(MoviesContract.MoviesEntry.COL_VOTE_COUNT)),
-                        (cursor.getInt(cursor.getColumnIndexOrThrow(MoviesContract.MoviesEntry.COL_VIDEO)) == 1),
                         cursor.getDouble(cursor.getColumnIndexOrThrow(MoviesContract.MoviesEntry.COL_VOTE_AVERAGE)),
                         cursor.getDouble(cursor.getColumnIndexOrThrow(MoviesContract.MoviesEntry.COL_POPULARITY)),
                         cursor.getString(cursor.getColumnIndexOrThrow(MoviesContract.MoviesEntry.COL_TITLE)),

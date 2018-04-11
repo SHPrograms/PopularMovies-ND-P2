@@ -1,4 +1,4 @@
-package com.sh.study.udacitynano.popularmovies.movies;
+package com.sh.study.udacitynano.popularmovies.Utils;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;

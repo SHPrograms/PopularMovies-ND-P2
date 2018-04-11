@@ -13,21 +13,29 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/detail_overview_value_tv"
+            android:id="@+id/detail_release_date_caption_tv"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.401"
+            android:text="@string/release_date"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_vote_average_value_tv" />
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/detail_release_date_value_tv"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@+id/detail_release_date_caption_tv"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/detail_vote_average_label_tv"
@@ -52,30 +60,65 @@
             app:layout_constraintStart_toStartOf="@+id/detail_release_date_value_tv"
             app:layout_constraintTop_toBottomOf="@+id/detail_release_date_value_tv" />
 
-
         <TextView
-            android:id="@+id/detail_release_date_caption_tv"
+            android:id="@+id/detail_overview_value_tv"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:padding="10dp"
-            android:text="@string/release_date"
-            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_vote_average_value_tv"
+            app:layout_constraintVertical_bias="0.01" />
 
         <TextView
-            android:id="@+id/detail_release_date_value_tv"
+            android:id="@+id/detail_trailers_caption_tv"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:padding="10dp"
-            android:textStyle="italic"
-            app:layout_constraintStart_toEndOf="@+id/detail_release_date_caption_tv"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/trailers"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_overview_value_tv" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detail_trailers_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/detail_trailers_caption_tv" />
+
+        <TextView
+            android:id="@+id/detail_reviews_caption_tv"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/reviews"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_trailers_recycler" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detail_reviews_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/detail_reviews_caption_tv" />
+
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

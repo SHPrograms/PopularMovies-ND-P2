@@ -11,12 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import com.facebook.stetho.Stetho;
 import com.sh.study.udacitynano.popularmovies.R;
+import com.sh.study.udacitynano.popularmovies.Utils.GridAutoFitLayoutManager;
 import com.sh.study.udacitynano.popularmovies.constants.MoviesConstants;
 import com.sh.study.udacitynano.popularmovies.model.Movie;
 import com.sh.study.udacitynano.popularmovies.moviedetail.MovieDetailActivity;
@@ -58,6 +58,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: savedInstanceState doesn't work when orientation is changed in details and not hold position
+        // https://stackoverflow.com/questions/28236390/recyclerview-store-restore-state-between-activities
         // TODO: Implement onPause and onResume?
 
         MoviesConstants.debugTag(CLASS_NAME, "onCreate:start");
