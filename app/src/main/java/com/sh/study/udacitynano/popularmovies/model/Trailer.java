@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Single trailer data.
  *
+ * Generated {@see http://www.jsonschema2pojo.org/}
+ *
  * @author Sławomir Hagiel
  * @version 1.0
  * @since 2018-04-10

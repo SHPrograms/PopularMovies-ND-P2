@@ -26,6 +26,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
     private ArrayList<Movie> movies;
     final private MoviesAdapterOnClickHandler mClickHandler;
 
+    private int mPosition;
+
     public interface MoviesAdapterOnClickHandler {
         void onClick(Movie movie);
     }
@@ -71,11 +73,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             Movie movie = movies.get(adapterPosition);
+            mPosition = adapterPosition;
             mClickHandler.onClick(movie);
         }
+
     }
     public void loadMovies(ArrayList<Movie> moviesData) {
         movies = moviesData;
         notifyDataSetChanged();
+    }
+
+    public int getPosition() {
+        return mPosition;
     }
 }

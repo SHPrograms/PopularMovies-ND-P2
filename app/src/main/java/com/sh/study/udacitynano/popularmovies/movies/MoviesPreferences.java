@@ -26,7 +26,7 @@ final class MoviesPreferences {
 
     static int getSourceMoviesPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getInt(SOURCE, SOURCE_NOT_POPULAR_MOVIES);
+                .getInt(SOURCE, SOURCE_NOT_POPULAR_MOVIES); // second parameter is default if empty
     }
 
     static void setSourceMoviesPreferences(Context context, int value) {
@@ -37,7 +37,7 @@ final class MoviesPreferences {
 
     static int getSortMoviesPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getInt(SORT, SORT_POPULARITY_MOVIES);
+                .getInt(SORT, SORT_POPULARITY_MOVIES); // second parameter is default if empty
     }
     static void setSortMoviesPreferences(Context context, int value) {
         PreferenceManager.getDefaultSharedPreferences(context)

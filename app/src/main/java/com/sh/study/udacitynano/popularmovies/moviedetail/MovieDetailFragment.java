@@ -1,13 +1,19 @@
 package com.sh.study.udacitynano.popularmovies.moviedetail;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,15 +37,14 @@ import com.squareup.picasso.Picasso;
  * @since 2018-02-23
  */
 public class MovieDetailFragment extends Fragment implements TrailersAdapter.TrailersAdapterOnClickHandler {
-
-    // TODO: RecyclerView sample in fragment https://developer.android.com/samples/RecyclerView/src/com.example.android.recyclerview/RecyclerViewFragment.html
-
     private static final String CLASS_NAME = "MovieDetailFragment";
 
     private Movie mMovie;
     private MovieDetailViewModel mViewModel;
     private TrailersAdapter mTrailersAdapter;
     private RecyclerView mTrailersRecyclerView;
+    private ReviewsAdapter mReviewsAdapter;
+    private RecyclerView mReviewsRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,23 +75,18 @@ public class MovieDetailFragment extends Fragment implements TrailersAdapter.Tra
         FloatingActionButton appfab = activity.findViewById(R.id.fab);
 
         mTrailersRecyclerView = rootView.findViewById(R.id.detail_trailers_recycler);
+        mReviewsRecyclerView = rootView.findViewById(R.id.detail_reviews_recycler);
         assert mTrailersRecyclerView != null;
+        assert mReviewsRecyclerView != null;
 
-        GridAutoFitLayoutManager trailerLayoutManager = new GridAutoFitLayoutManager(getContext(), 0);
-        mTrailersRecyclerView.setLayoutManager(trailerLayoutManager);
+        mTrailersRecyclerView.setLayoutManager(new GridAutoFitLayoutManager(getContext(), 0));
+        mReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mTrailersAdapter = new TrailersAdapter(this);
+        mReviewsAdapter = new ReviewsAdapter();
+
         mTrailersRecyclerView.setAdapter(mTrailersAdapter);
-
-/*
-                RecyclerView mReviewsRecyclerView;
-                mReviewsRecyclerView = rootView.findViewById(R.id.detail_reviews_recycler);
-                assert mReviewsRecyclerView != null;
-                LinearLayoutManager reviewsLayoutManager = new LinearLayoutManager(getContext());
-                mTrailersRecyclerView.setLayoutManager(reviewsLayoutManager);
-*/
-
-
+        mReviewsRecyclerView.setAdapter(mReviewsAdapter);
 
         if (mMovie != null) {
             if (appBarLayout != null) {
@@ -114,31 +114,45 @@ public class MovieDetailFragment extends Fragment implements TrailersAdapter.Tra
             mViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
             mViewModel.getTrailers(Long.toString(mMovie.id())).observe(this, trailers -> {
                 mTrailersAdapter.setTrailers(trailers);
-                for (Trailer trailer : trailers) {
-                    MoviesConstants.debugTag(CLASS_NAME, "onCreateView: trailer: " + trailer.getName());
+                if (trailers.size() == 0) {
+                    rootView.findViewById(R.id.detail_trailers_caption_tv).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.detail_trailers_recycler).setVisibility(View.GONE);
                 }
             });
-
-            // TODO: If no trailers then hide
-//                    rootView.findViewById(R.id.detail_trailers_list).setVisibility(View.GONE);
-//                    rootView.findViewById(R.id.detail_trailers_caption_tv).setVisibility(View.GONE);
-
-            // TODO: If no reviews then hide
-            rootView.findViewById(R.id.detail_reviews_recycler).setVisibility(View.GONE);
-            rootView.findViewById(R.id.detail_reviews_caption_tv).setVisibility(View.GONE);
+            mViewModel.getReviews(Long.toString(mMovie.id())).observe(this, reviews -> {
+                mReviewsAdapter.setReviews(reviews);
+                if (reviews.size() == 0) {
+                    rootView.findViewById(R.id.detail_reviews_recycler).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.detail_reviews_caption_tv).setVisibility(View.GONE);
+                }
+            });
         }
         return rootView;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MoviesConstants.debugTag(CLASS_NAME, "onActivityCreated:start");
-        // TODO: access to ViewModel here?
-    }
-
-    @Override
     public void onClick(Trailer trailer) {
-        // TODO: run trailer
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.youtube_chooser_title)
+                .setItems(R.array.pick_source, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = null;
+                        switch (which) {
+                            case 0:
+                                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailer.getKey()));
+                                break;
+                            case 1:
+                                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
+                                break;
+                        }
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException ex) {
+                            MoviesConstants.errorTag("Dialog", ex.getMessage());
+                        }
+                    }
+                });
+        builder.create();
+        builder.show();
     }
 }

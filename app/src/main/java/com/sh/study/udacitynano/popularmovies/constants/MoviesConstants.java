@@ -10,6 +10,7 @@ import android.util.Log;
  * @since 2018-03-25
  */
 public final class MoviesConstants {
+
     private MoviesConstants() {
         throw new AssertionError();
     }
@@ -49,4 +50,6 @@ public final class MoviesConstants {
      * representing the single movie data
      */
     public static final String MOVIE = "movie";
+
+    public static final String TWO_PANE = "two_pane";
 }

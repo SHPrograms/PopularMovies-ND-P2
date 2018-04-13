@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pick_source">
+        <item>Application</item>
+        <item>Web Browser</item>
+    </string-array>
+</resources>

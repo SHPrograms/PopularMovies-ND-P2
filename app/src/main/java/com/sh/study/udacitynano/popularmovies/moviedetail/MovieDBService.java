@@ -1,5 +1,6 @@
 package com.sh.study.udacitynano.popularmovies.moviedetail;
 
+import com.sh.study.udacitynano.popularmovies.model.ReviewResponse;
 import com.sh.study.udacitynano.popularmovies.model.TrailerResponse;
 
 import retrofit2.Call;
@@ -17,4 +18,8 @@ import retrofit2.http.Query;
 public interface MovieDBService {
     @GET("movie/{movie_id}/videos")
     Call<TrailerResponse> getTrailers(@Path("movie_id") String movieId, @Query("api_key") String apiKey);
+
+    @GET("movie/{movie_id}/reviews")
+    Call<ReviewResponse> getReviews(@Path("movie_id") String movieId, @Query("api_key") String apiKey);
+
 }

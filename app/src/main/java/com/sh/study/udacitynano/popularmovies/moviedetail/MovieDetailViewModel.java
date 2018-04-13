@@ -7,6 +7,8 @@ import android.arch.lifecycle.ViewModel;
 import com.google.gson.GsonBuilder;
 import com.sh.study.udacitynano.popularmovies.BuildConfig;
 import com.sh.study.udacitynano.popularmovies.constants.MoviesConstants;
+import com.sh.study.udacitynano.popularmovies.model.Review;
+import com.sh.study.udacitynano.popularmovies.model.ReviewResponse;
 import com.sh.study.udacitynano.popularmovies.model.Trailer;
 import com.sh.study.udacitynano.popularmovies.model.TrailerResponse;
 
@@ -31,7 +33,7 @@ public class MovieDetailViewModel extends ViewModel {
 
     private String mMovieId;
     private LiveData<List<Trailer>> mTrailers;
-//    private LiveData<List<Review>> mReviews;
+    private LiveData<List<Review>> mReviews;
 
     public LiveData<List<Trailer>> getTrailers(String id) {
         mMovieId = id;
@@ -44,14 +46,10 @@ public class MovieDetailViewModel extends ViewModel {
 
         MovieDBService service = retrofit.create(MovieDBService.class);
 
-        Call<TrailerResponse> movieResultCallback = service.getTrailers(mMovieId, BuildConfig.POPULAR_MOVIES_MY_MOVIE_DB_API_KEY);
-        movieResultCallback.enqueue(new Callback<TrailerResponse>() {
+        Call<TrailerResponse> trailerResultCallback = service.getTrailers(mMovieId, BuildConfig.POPULAR_MOVIES_MY_MOVIE_DB_API_KEY);
+        trailerResultCallback.enqueue(new Callback<TrailerResponse>() {
             @Override
             public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
-                // TODO: Do I need check codes?
-                //int code = response.code();
-                // can check the status code
-                // status_code":34 - wrong url.
                 data.setValue(response.body().getResults());
                 MoviesConstants.debugTag("MovieDetailViewModel", response.body().getResults().toString());
             }
@@ -64,4 +62,33 @@ public class MovieDetailViewModel extends ViewModel {
         mTrailers = data;
         return data;
     }
+
+    public LiveData<List<Review>> getReviews(String id) {
+        mMovieId = id;
+
+        final MutableLiveData<List<Review>> data = new MutableLiveData<>();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(MOVIES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .build();
+
+        MovieDBService service = retrofit.create(MovieDBService.class);
+
+        Call<ReviewResponse> reviewResultCallback = service.getReviews(mMovieId, BuildConfig.POPULAR_MOVIES_MY_MOVIE_DB_API_KEY);
+        reviewResultCallback.enqueue(new Callback<ReviewResponse>() {
+            @Override
+            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
+                data.setValue(response.body().getResults());
+                MoviesConstants.debugTag("MovieDetailViewModel", response.body().getResults().toString());
+            }
+
+            @Override
+            public void onFailure(Call<ReviewResponse> call, Throwable t) {
+                MoviesConstants.errorTag("MovieDetailViewModel", t.toString());
+            }
+        });
+        mReviews = data;
+        return data;
+    }
+
 }

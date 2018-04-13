@@ -1,5 +1,7 @@
 package com.sh.study.udacitynano.popularmovies.moviedetail;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +17,6 @@ import com.sh.study.udacitynano.popularmovies.model.Movie;
 
 import java.util.UnknownFormatConversionException;
 
-
 /**
  * An activity representing a single movie detail screen.
  *
@@ -24,12 +25,9 @@ import java.util.UnknownFormatConversionException;
  * @since 2018-02-23
  */
 public class MovieDetailActivity extends AppCompatActivity {
-    /**
-     * TODO: Add reviews and videos features...
-     * path: https://api.themoviedb.org/3/movie/{id}/reviews?&api_key=[youur_api_key]
-     *  - {@see "https://youtu.be/F4q4HPUKFME"}
-     */
     private static final String CLASS_NAME = "MovieDetailActivity";
+    private int mReturnStatus = -1;
+    private boolean mTwoPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +51,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             Bundle arguments = new Bundle();
             arguments.putParcelable(MoviesConstants.MOVIE,
                     getIntent().getParcelableExtra(MoviesConstants.MOVIE));
+            mTwoPane = getIntent().getBooleanExtra(MoviesConstants.TWO_PANE, false);
 
             MovieDetailFragment fragment = new MovieDetailFragment();
             fragment.setArguments(arguments);
@@ -60,6 +59,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .add(R.id.movie_detail_container, fragment)
                     .commit();
         }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,9 +71,14 @@ public class MovieDetailActivity extends AppCompatActivity {
 
                 switch (popular) {
                     case MovieDetailContactProvider.IS_POPULAR:
+                        if (mReturnStatus == -1) mReturnStatus = 1;
+                        else if (mReturnStatus == 2) mReturnStatus = -1;
+
                         fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_on));
                         break;
                     case MovieDetailContactProvider.IS_NOT_POPULAR:
+                        if (mReturnStatus == -1) mReturnStatus = 2;
+                        else if (mReturnStatus == 1) mReturnStatus = -1;
                         fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_off));
                         break;
                     default:
@@ -93,5 +98,16 @@ public class MovieDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if ((mReturnStatus > 0) && (!mTwoPane)) {
+            Intent back = new Intent();
+            back.putExtra("result", mReturnStatus);
+            setResult(Activity.RESULT_OK, back);
+            finish();
+        }
     }
 }

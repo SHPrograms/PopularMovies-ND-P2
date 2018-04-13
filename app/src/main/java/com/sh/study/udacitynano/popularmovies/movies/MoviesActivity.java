@@ -3,7 +3,6 @@ package com.sh.study.udacitynano.popularmovies.movies;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -34,20 +33,17 @@ import com.sh.study.udacitynano.popularmovies.moviedetail.MovieDetailFragment;
  * Some structures and comments are borrowed from {@see "https://github.com/udacity/ud851-Sunshine"}
  */
 public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.MoviesAdapterOnClickHandler {
-    /**
-     * TODO: Theme generate Render problem...
-     * Options:
-     * - Check {@see https://developer.android.com/guide/topics/ui/look-and-feel/themes.html} and
-     * create theme from the beginning.
-     */
 
     private static final String CLASS_NAME = "MoviesActivity";
     private static final int CUR_ID = 1001;
+    private static final int CALLBACK_REQUEST = 1;
+    private static final String IS_CHANGE = "result";
 
     private MoviesAdapter mMoviesAdapter;
     private ProgressBar mLoadingDataFromDBMoviesIndicator;
     private RecyclerView mRecyclerView;
     private boolean mTwoPane;
+    private int mPosition;
 
     /**
      * Main activity create method.
@@ -57,9 +53,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: savedInstanceState doesn't work when orientation is changed in details and not hold position
-        // https://stackoverflow.com/questions/28236390/recyclerview-store-restore-state-between-activities
-        // TODO: Implement onPause and onResume?
 
         MoviesConstants.debugTag(CLASS_NAME, "onCreate:start");
         setContentView(R.layout.activity_movie_list);
@@ -94,8 +87,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
      */
     @Override
     public void onClick(Movie movie) {
-        //TODO: Add restartLoader if we see movies from local DB and user will delete movie
-
         if (mTwoPane) {
             Bundle arguments = new Bundle();
             arguments.putParcelable(MoviesConstants.MOVIE, movie);
@@ -110,7 +101,22 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             Context context = this;
             Intent intent = new Intent(context, MovieDetailActivity.class);
             intent.putExtra(MoviesConstants.MOVIE, movie);
-            context.startActivity(intent);
+            startActivityForResult(intent, CALLBACK_REQUEST);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (!mTwoPane) {
+            if (requestCode == CALLBACK_REQUEST) {
+                if (MoviesPreferences.getSourceMoviesPreferences(this) == MoviesPreferences.SOURCE_POPULAR_MOVIES) {
+                    mPosition = -1;
+                    getSupportLoaderManager().destroyLoader(CUR_ID);
+                    getSupportLoaderManager().initLoader(CUR_ID, null, getMoviesLoaderCallbacks());
+                    mMoviesAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
@@ -129,7 +135,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MoviesConstants.debugTag(CLASS_NAME, "onPrepareOptionsMenu:start");
-//        invalidateOptionsMenu();
         if (MoviesPreferences.getSortMoviesPreferences(this) == MoviesPreferences.SORT_TOP_RATED_MOVIES)
             menu.findItem(R.id.menu_sorting_item).setTitle(R.string.most_popular_action_item);
         else menu.findItem(R.id.menu_sorting_item).setTitle(R.string.top_rated_action_item);
@@ -157,6 +162,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
                     MoviesPreferences.setSortMoviesPreferences(this, MoviesPreferences.SORT_POPULARITY_MOVIES);
                     item.setTitle(R.string.top_rated_action_item);
                 }
+                mPosition = -1;
                 getSupportLoaderManager().restartLoader(CUR_ID, null, getMoviesLoaderCallbacks());
                 return true;
             case R.id.menu_popular:
@@ -168,6 +174,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
                     MoviesPreferences.setSourceMoviesPreferences(this, MoviesPreferences.SOURCE_POPULAR_MOVIES);
                     item.setIcon(android.R.drawable.btn_star_big_on);
                 }
+                mPosition = -1;
                 getSupportLoaderManager().restartLoader(CUR_ID, null, getMoviesLoaderCallbacks());
                 return true;
             default:
@@ -208,8 +215,9 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
                 MoviesConstants.debugTag(CLASS_NAME, "onLoadFinished:start");
                 mMoviesAdapter.loadMovies(data);
 
-                //TODO: onFailure OnMoviesLoaderCallbacksListener:
-//                Toast.makeText(MoviesActivity.this, R.string.No_internet_connection, Toast.LENGTH_LONG).show();
+                if (mPosition > 0) {
+                    mRecyclerView.smoothScrollToPosition(mPosition);
+                }
             }
 
             /**
@@ -219,9 +227,29 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             @Override
             public void onLoaderReset() {
                 MoviesConstants.debugTag(CLASS_NAME, "onLoaderReset:start");
-                // TODO: DO I need that?
-                mMoviesAdapter.loadMovies(null);
             }
         });
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        MoviesConstants.debugTag(CLASS_NAME, "onSaveInstanceState:start");
+        outState.putInt("position", mPosition);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        MoviesConstants.debugTag(CLASS_NAME, "onRestoreInstanceState:end");
+        mPosition = savedInstanceState.getInt("position");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MoviesConstants.debugTag(CLASS_NAME, "onPause:after super: " + mMoviesAdapter.getPosition());
+        mPosition = mMoviesAdapter.getPosition();
+    }
 }
+
